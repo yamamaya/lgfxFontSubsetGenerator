@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="jquery.binarytransport.js"></script>
+</head>
+<body>
+    <div id="formMain">
+        <div>
+            フォントを選んでください：<br />
+            <select id="selFont">
+                <option value="lgfx_font_japan_gothic_8">ゴシック体/等幅/8ピクセル</option>
+                <option value="lgfx_font_japan_gothic_12">ゴシック体/等幅/12ピクセル</option>
+                <option value="lgfx_font_japan_gothic_16">ゴシック体/等幅/16ピクセル</option>
+                <option value="lgfx_font_japan_gothic_20">ゴシック体/等幅/20ピクセル</option>
+                <option value="lgfx_font_japan_gothic_24">ゴシック体/等幅/24ピクセル</option>
+                <option value="lgfx_font_japan_gothic_28">ゴシック体/等幅/28ピクセル</option>
+                <option value="lgfx_font_japan_gothic_32">ゴシック体/等幅/32ピクセル</option>
+                <option value="lgfx_font_japan_gothic_36">ゴシック体/等幅/36ピクセル</option>
+                <option value="lgfx_font_japan_gothic_40">ゴシック体/等幅/40ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_8">ゴシック体/プロポーショナル/8ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_12">ゴシック体/プロポーショナル/12ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_16">ゴシック体/プロポーショナル/16ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_20">ゴシック体/プロポーショナル/20ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_24">ゴシック体/プロポーショナル/24ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_28">ゴシック体/プロポーショナル/28ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_32">ゴシック体/プロポーショナル/32ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_36">ゴシック体/プロポーショナル/36ピクセル</option>
+                <option value="lgfx_font_japan_gothic_p_40">ゴシック体/プロポーショナル/40ピクセル</option>
+                <option value="lgfx_font_japan_mincho_8">明朝体/等幅/8ピクセル</option>
+                <option value="lgfx_font_japan_mincho_12">明朝体/等幅/12ピクセル</option>
+                <option value="lgfx_font_japan_mincho_16">明朝体/等幅/16ピクセル</option>
+                <option value="lgfx_font_japan_mincho_20">明朝体/等幅/20ピクセル</option>
+                <option value="lgfx_font_japan_mincho_24">明朝体/等幅/24ピクセル</option>
+                <option value="lgfx_font_japan_mincho_28">明朝体/等幅/28ピクセル</option>
+                <option value="lgfx_font_japan_mincho_32">明朝体/等幅/32ピクセル</option>
+                <option value="lgfx_font_japan_mincho_36">明朝体/等幅/36ピクセル</option>
+                <option value="lgfx_font_japan_mincho_40">明朝体/等幅/40ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_8">明朝体/プロポーショナル/8ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_12">明朝体/プロポーショナル/12ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_16">明朝体/プロポーショナル/16ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_20">明朝体/プロポーショナル/20ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_24">明朝体/プロポーショナル/24ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_28">明朝体/プロポーショナル/28ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_32">明朝体/プロポーショナル/32ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_36">明朝体/プロポーショナル/36ピクセル</option>
+                <option value="lgfx_font_japan_mincho_p_40">明朝体/プロポーショナル/40ピクセル</option>
+            </select>
+        </div>
+        <div>
+            サブセットに含める文字を入力してください：<br />
+            <textarea id="txtSubset" cols="80" rows="10"></textarea>
+        </div>
+        <div>
+            <button id="btnGenerate" style="width:10em">生成</button>
+        </div>
+        <div id="divResult">
+            処理結果：<br />
+            <textarea id="txtResult" cols="80" rows="10"></textarea>
+        </div>
+    </div>
+
+    <script language="javascript">
+
+        function loadFontFile(filename) {
+            return $.ajax({
+                url: filename,
+                type: "GET",
+                dataType: "binary",
+                responseType: 'arraybuffer',
+                processData: false,
+                error: function (result, errStatus, errorMessage) {
+                    console.log(errStatus + ' -- ' + errorMessage);
+                }
+            });
+        }
+
+        function toInt8(a) {
+            if (a <= 127) {
+                return a;
+            } else {
+                return a - 256;
+            }
+        }
+
+        function concatUnique(list1, list2) {
+            list2.forEach(item => {
+                if (list1.indexOf(item) == -1) {
+                    list1.push(item);
+                }
+            });
+        }
+
+        class FontFileHeader {
+            constructor(...args) {
+                if (args.length == 0) {
+                    this.data = new Uint8Array(23);
+                } else if (args.length == 1 && args[0] instanceof Uint8Array && args[0].length == 23) {
+                    this.data = args[0];
+                } else {
+                    throw "FontFileHeader: Unexpected";
+                }
+            }
+
+            get glyph_cnt() { return this.data[0]; }
+            get bbx_mode() { return this.data[1]; }
+            get bits_per_0() { return this.data[2]; }
+            get bits_per_1() { return this.data[3]; }
+            get bits_per_char_width() { return this.data[4]; }
+            get bits_per_char_height() { return this.data[5]; }
+            get bits_per_char_x() { return this.data[6]; }
+            get bits_per_char_y() { return this.data[7]; }
+            get bits_per_delta_x() { return this.data[8]; }
+            get max_char_width() { return toInt8(this.data[9]); }
+            get max_char_height() { return toInt8(this.data[10]); }
+            get x_offset() { return toInt8(this.data[11]); }
+            get y_offset() { return toInt8(this.data[12]); }
+            get ascent_A() { return toInt8(this.data[13]); }
+            get descent_g() { return toInt8(this.data[14]); }
+            get ascent_para() { return toInt8(this.data[15]); }
+            get descent_para() { return toInt8(this.data[16]); }
+            get start_pos_upper_A() { return (this.data[17] << 8) | this.data[18]; }
+            set start_pos_upper_A(p) { this.data[17] = p >> 8; this.data[18] = p & 0xff; }
+            get start_pos_lower_a() { return (this.data[19] << 8) | this.data[20]; }
+            set start_pos_lower_a(p) { this.data[19] = p >> 8; this.data[20] = p & 0xff; }
+            get start_pos_unicode() { return (this.data[21] << 8) | this.data[22]; }
+            set start_pos_unicode(p) { this.data[21] = p >> 8; this.data[22] = p & 0xff; }
+        }
+
+        class FontFile {
+            constructor(org) {
+                this.data = new Uint8Array(org);
+                this.header = new FontFileHeader(this.data.subarray(0, 23));
+            }
+
+            getGlyph(char) {
+                console.log("getGlyph(" + toHex(char) + ")");
+                var ptr = 23;
+                if (char <= 255) {
+                    if (char >= 0x61) {
+                        ptr += this.header.start_pos_lower_a;
+                    } else if (char >= 0x41) {
+                        ptr += this.header.start_pos_upper_A;
+                    }
+                    while (this.data[ptr + 1] != 0) {
+                        if (this.data[ptr] == char) {
+                            console.log("begin:" + toHex(ptr));
+                            return new Glyph(this.data.subarray(ptr, ptr + this.data[ptr + 1]), false);
+                        }
+                        ptr += this.data[ptr + 1];
+                    }
+                } else {
+                    ptr += this.header.start_pos_unicode;
+                    var table = ptr;
+                    var e;
+                    do {
+                        ptr += (this.data[table] << 8) | this.data[table + 1];
+                        e = (this.data[table + 2] << 8) | this.data[table + 3];
+                        if (e < 0xffff) {
+                            var ptr2 = ptr;
+                            var code;
+                            while ((code = this.data[ptr2] << 8 | this.data[ptr2 + 1]) != 0) {
+                                if (code == char) {
+                                    console.log("begin:" + toHex(ptr2));
+                                    return new Glyph(this.data.subarray(ptr2, ptr2 + this.data[ptr2 + 2]), true);
+                                }
+                                ptr2 += this.data[ptr2 + 2];
+                            }
+                        }
+                        table += 4;
+                    } while (e != 65535);
+                }
+                return null;
+            }
+
+            _getASCIICharArray(ptr) {
+                var list = new Array();
+                while (this.data[ptr + 1] != 0) {
+                    list.push(this.data[ptr]);
+                    ptr += this.data[ptr + 1];
+                }
+                return list;
+            }
+
+            _getUnicodeCharArray() {
+                var ptr = 23 + this.header.start_pos_unicode;
+                var table = ptr;
+                var list = new Array();
+                var e;
+                do {
+                    ptr += (this.data[table] << 8) | this.data[table + 1];
+                    e = (this.data[table + 2] << 8) | this.data[table + 3];
+                    var ptr2 = ptr;
+                    var code;
+                    while ((code = this.data[ptr2] << 8 | this.data[ptr2 + 1]) != 0) {
+                        if (list.indexOf(code) == -1) {
+                            list.push(code);
+                        }
+                        ptr2 += this.data[ptr2 + 2];
+                    }
+                    table += 4;
+                } while (e != 0xffff);
+                return list;
+            }
+
+            getCharArray() {
+                var list = this._getASCIICharArray(23);
+                concatUnique(list, this._getASCIICharArray(23 + this.header.start_pos_lower_a));
+                concatUnique(list, this._getASCIICharArray(23 + this.header.start_pos_upper_A));
+                concatUnique(list, this._getUnicodeCharArray());
+                return list.sort((a, b) => a - b);
+            }
+        }
+
+        class FontFileGenerator {
+            constructor(template) {
+                this.header = new FontFileHeader(Uint8Array.from(template.header.data));
+                this.new_glyphs = new Array();
+                this.data = null;
+            }
+
+            addGlyph(...args) {
+                if (args.length == 1 && args[0] instanceof Array) {
+                    this.new_glyphs = this.new_glyphs.concat(args[0]);
+
+                } else if (args.length == 1 && args[0] instanceof Glyph) {
+                    this.new_glyphs.push(args[0]);
+
+                } else {
+                    throw "addGlyph: Unimplemented";
+                }
+            }
+
+            serialize() {
+                var list = this.new_glyphs.sort((a, b) => a.code - b.code);
+                var list_ascii = list.filter(a => a.code <= 0xff);
+                var list_unicode = list.filter(a => a.code > 0xff);
+
+                var end_of_ascii = [0x00];
+                var unicode_lookup_table = [0x00, 0x04, 0xff, 0xff];
+                var end_of_unicode = [0x00, 0x00];
+
+                this.header.start_pos_upper_A = 0;
+                this.header.start_pos_lower_a = 0;
+                this.header.start_pos_unicode = FontFileGenerator.getGlyphArraySize(list_ascii) + end_of_ascii.length;
+
+                var total_size = this.header.data.length;
+                total_size += FontFileGenerator.getGlyphArraySize(list_ascii);
+                total_size += end_of_ascii.length;
+                total_size += unicode_lookup_table.length;
+                total_size += FontFileGenerator.getGlyphArraySize(list_unicode);
+                total_size += end_of_unicode.length;
+
+                var newdata = new Uint8Array(total_size);
+
+                newdata.set(this.header.data, 0);
+                var ptr = this.header.data.length;
+
+                ptr = FontFileGenerator._serializeGlyphArray(list_ascii, newdata, ptr);
+
+                newdata.set(end_of_ascii, ptr);
+                ptr += end_of_ascii.length;
+
+                newdata.set(unicode_lookup_table, ptr);
+                ptr += unicode_lookup_table.length;
+
+                ptr = FontFileGenerator._serializeGlyphArray(list_unicode, newdata, ptr);
+
+                newdata.set(end_of_unicode, ptr);
+
+                this.data = newdata;
+            }
+
+            static _serializeGlyphArray(list, arr, ptr) {
+                list.forEach(glyph => {
+                    arr.set(glyph.data, ptr);
+                    ptr += glyph.data.length;
+                });
+                return ptr;
+            }
+
+            static getGlyphArraySize(list) {
+                var size = 0;
+                list.forEach(glyph => {
+                    size += glyph.data.length;
+                });
+                return size;
+            }
+        }
+
+        class Glyph {
+            constructor(raw_data, is_unicode) {
+                this.data = raw_data;
+                this.unicode = is_unicode;
+                if (this.isUnicode) {
+                    this.code = (this.data[0] << 8) | this.data[1];
+                    this.raw_length = this.data[2];
+                } else {
+                    this.code = this.data[0];
+                    this.raw_length = this.data[1];
+                }
+            }
+
+            get isUnicode() { return this.unicode }
+        }
+
+        function toHex(v, digits = 0) {
+            if (digits == 2 || (digits == 0 && v <= 0xff)) {
+                return ('00' + v.toString(16).toUpperCase()).substr(-2);
+            } else if (digits == 4 || (digits == 0 && v <= 0xffff)) {
+                return ('0000' + v.toString(16).toUpperCase()).substr(-4);
+            } else {
+                return ('00000000' + v.toString(16).toUpperCase()).substr(-8);
+            }
+        }
+
+        function generateCodeTable(list) {
+            var table = $("<table border='1'>");
+            var row = $("<tr></tr>");
+            var row_code = 0;
+            var cols = new Array(16);
+            cols.fill(-1);
+            list.forEach(code => {
+                if (row_code != (code & 0xfff0)) {
+                    if (cols.some((a) => a != -1)) {
+                        $("<td>" + toHex(row_code) + "</td>").appendTo(row);
+                        cols.forEach(c => {
+                            var cell = $("<td width='30pt'></td>");
+                            if (c != -1) {
+                                cell.text(c);
+                            } else {
+                                cell.css("background-color", "gray");
+                            }
+                            cell.appendTo(row);
+                        });
+                        row.appendTo(table);
+                        row = $("<tr></tr>");
+                        cols.fill(-1);
+                    }
+                    row_code = code & 0xfff0;
+                }
+                cols[code & 0x000f] = String.fromCodePoint(code);
+            });
+            if (cols.some((a) => a != -1)) {
+                $("<td>" + toHex(row_code) + "</td>").appendTo(row);
+                cols.forEach(c => {
+                    if (c == -1) {
+                        c = "";
+                    }
+                    $("<td>" + c + "</td>").appendTo(row);
+                });
+                row.appendTo(table);
+            }
+            return table;
+        }
+
+        function unique(array) {
+            return array.filter((elem, index, self) => self.indexOf(elem) === index);
+        }
+
+        function retrieveSubsetCharList() {
+            var subset_text = $("#txtSubset").val();
+            var list = subset_text.split("").filter(a => a >= " ").map(a => a.codePointAt(0));
+            return unique(list);
+        }
+
+        //loadFontFile("fonts/lgfx_font_japan_gothic_p_16.bin").then(function (data) {
+        //    var font = new FontFile(data);
+        //    var list = font.getCharArray();
+        //    //$("body").append(generateCodeTable(list));
+        //});
+
+        function clearLog() {
+            $("#txtResult").val("");
+        }
+
+        function appendLog(msg, newline = true) {
+            //newline = newline === undefined ? true : newline;
+            var ta = $("#txtResult");
+            var txt = ta.val();
+            if (txt == "") {
+                txt = msg;
+            } else if (newline) {
+                txt = txt.concat("\n", msg);
+            } else {
+                txt = txt.concat(msg);
+            }
+            ta.val(txt);
+            ta.scrollTop(ta[0].scrollHeight);
+        }
+
+        function outputHexDump(data) {
+            var line = "";
+            var i;
+            for (i = 0; i < data.length; i++) {
+                if ((i & 15) > 0) {
+                    line += " ";
+                }
+                line += toHex(data[i], 2);
+                if ((i & 15) == 15) {
+                    console.log(line);
+                    line = "";
+                }
+            }
+            if (line != "") {
+                console.log(line);
+            }
+        }
+
+        function generateSubset(font, subset_list) {
+            var gen = new FontFileGenerator(font);
+            subset_list.forEach(code => {
+                var glyph = font.getGlyph(code);
+                console.log(glyph.data.toString());
+                gen.addGlyph(glyph);
+            });
+            gen.serialize();
+            console.log("serialize done. " + gen.data.length + " bytes");
+            outputHexDump(gen.data);
+        }
+
+        $("#btnGenerate").on("click", function () {
+            clearLog();
+            var fontname = $("#selFont").val();
+            var subset_list = retrieveSubsetCharList();
+            if (subset_list.length == 0) {
+                appendLog("サブセットに含める文字がありません。");
+                return;
+            }
+
+            appendLog("フォントファイル\"" + fontname + "\"を読み込んでいます... ");
+            var fonturl = "fonts/" + fontname + ".bin";
+            loadFontFile(fonturl).then(function (data) {
+                appendLog("成功", false);
+                var font = new FontFile(data);
+                var orglist = font.getCharArray();
+                appendLog("フォントファイルから" + orglist.length + "文字を読み込みました。");
+
+                var subset_list_filtered = subset_list.filter(a => orglist.includes(a));
+                var subset_list_error = subset_list.filter(a => !orglist.includes(a));
+                if (subset_list_error.length > 0) {
+                    appendLog("以下の文字は元のフォントファイルに存在しません。生成するサブセットから除外されます。");
+                    subset_list_error.forEach(code => {
+                        appendLog("U+" + toHex(code) + " \"" + String.fromCodePoint(code) + "\"");
+                    });
+                }
+                if (subset_list_filtered.length == 0) {
+                    appendLog("サブセットに含める文字がありません。");
+                    return;
+                }
+                appendLog(subset_list_filtered.length + "文字のサブセットを作成します。");
+
+                generateSubset(font, subset_list_filtered);
+
+            }, function () {
+                appendLog("失敗", false);
+            });
+        });
+
+    </script>
+
+</body>
+</html>
