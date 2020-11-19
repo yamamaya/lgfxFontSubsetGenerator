@@ -10,7 +10,7 @@
         <h1>日本語フォントサブセットジェネレーター for LovyanGFX</h1>
         <div class="divGroup">
             フォントを選んでください：<br />
-            <span style="vertical-align:middle"><select id="selFont" style="min-width:22em"></select><button id="btnShowCharset" style="width:10em">文字セットを見る</button></span>
+            <span style="vertical-align:middle"><select id="selFont" style="min-width:22em"></select><button id="btnShowCharset" style="width:10em" disabled>文字セットを見る</button></span>
         </div>
         <div class="divGroup">
             <span style="vertical-align:middle">サブセットに含める文字を入力してください：&nbsp;<button id="btnUploadSubset">ファイルから読み込む</button></span><br />
@@ -21,7 +21,7 @@
             <input type="text" id="txtSubsetName" style="width:15em" value="myFont" /><span id="msgSubsetName" class="msgErrorMessage"></span>
         </div>
         <div class="divGroup">
-            <button id="btnGenerate" style="width:10em">生成</button>
+            <button id="btnGenerate" style="width:10em" disabled>生成</button>
             &nbsp;
             <button id="btnDownload" style="width:10em" disabled>ダウンロード</button>
         </div>
@@ -621,6 +621,9 @@
                         appendLog("\"" + font_config.name + "\"が見つかりません。");
                     }
                 });
+
+                $("#btnShowCharset").prop("disabled", false);
+                $("#btnGenerate").prop("disabled", false);
 
             }).catch(() => {
                 appendLog("フォントファイルを読み込めませんでした。");
