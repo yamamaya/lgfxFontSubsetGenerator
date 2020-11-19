@@ -1,0 +1,103 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#formMain {
+    margin: 0.5em;
+}
+
+div.divGroup {
+    margin: 0 0 1em 0;
+}
+
+div.divModal {
+    display: none;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+div.divModalBG {
+    background: rgba(0,0,0,0.5);
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+}
+
+div.divModalFrame {
+    background: #fff;
+    left: 50%;
+    padding: 0.5em 1em 1em 1em;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#divCharsetFrame {
+    width: 40em;
+    height: 30em;
+}
+
+#divUploadFrame {
+    width: 35em;
+    height: 8em;
+}
+
+div.divModalHeader {
+    vertical-align: middle;
+    position: relative;
+    padding-bottom: 0.2em;
+}
+
+div.divModalCaption {
+    float: left;
+    font-weight: bold;
+}
+
+div.divCloseModal {
+    width: 100%;
+    text-align: right;
+}
+
+div.divModalInnerFrame {
+    position: relative;
+    width: 100%;
+}
+
+#divCharsetInnerFrame {
+    height: 28em;
+    overflow-y: scroll;
+}
+
+#divUploadInnerFrame {
+    height: 6em;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+table.CodeTable {
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border: 1px solid black;
+}
+
+    table.CodeTable td {
+        border: 1px solid black;
+        vertical-align: middle;
+    }
+
+td.char {
+    width: 2em;
+    height: 1em;
+    text-align: center;
+}
+
+#fileUpload {
+    border: 1px solid black;
+}
+
+.msgErrorMessage {
+    color: coral;
+}
