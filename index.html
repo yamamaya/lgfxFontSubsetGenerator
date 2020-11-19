@@ -654,8 +654,8 @@
                 $("#btnGenerate").prop("disabled", false);
 
             }).catch(() => {
+                $("#divModalProgress").fadeOut();
                 appendLog("フォントファイルを読み込めませんでした。");
-
             });
         });
 
