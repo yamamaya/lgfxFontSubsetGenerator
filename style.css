@@ -19,6 +19,10 @@ div.divModal {
     width: 100%;
 }
 
+#divModalProgress {
+    display: block;
+}
+
 div.divModalBG {
     background: rgba(0,0,0,0.5);
     height: 100vh;
@@ -43,6 +47,11 @@ div.divModalFrame {
 #divUploadFrame {
     width: 35em;
     height: 8em;
+}
+
+#divProgressFrame {
+    width: 30em;
+    height: 5em;
 }
 
 div.divModalHeader {
@@ -77,16 +86,24 @@ div.divModalInnerFrame {
     vertical-align: middle;
 }
 
+#divProgressInnerFrame {
+    width:30em;
+    height: 3em;
+    display: table-cell;
+    text-align:center;
+    vertical-align: middle;
+}
+
 table.CodeTable {
     border-collapse: collapse;
     border-spacing: 0px;
     border: 1px solid black;
 }
 
-    table.CodeTable td {
-        border: 1px solid black;
-        vertical-align: middle;
-    }
+table.CodeTable td {
+    border: 1px solid black;
+    vertical-align: middle;
+}
 
 td.char {
     width: 2em;

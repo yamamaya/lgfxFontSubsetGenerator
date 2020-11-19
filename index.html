@@ -34,6 +34,22 @@
         <a href="https://github.com/yamamaya/lgfxFontSubsetGenerator" target="_blank">https://github.com/yamamaya/lgfxFontSubsetGenerator</a>
     </div>
 
+    <!-- 進捗表示用モーダルウィンドウ -->
+    <div id="divModalProgress" class="divModal">
+        <div class="divModalBG"></div>
+        <div id="divProgressFrame" class="divModalFrame">
+            <div class="divModalHeader">
+                <div class="divModalCaption">フォントファイルをダウンロードしています...</div><div class="divCloseModal">&nbsp;</div>
+            </div>
+            <div id="divProgressInnerFrame" class="divModalInnerFrame">
+                <div style="border:1px solid black;width:30em;">
+                    <div id="divProgressBar" style="background-color:darkturquoise;width:0%;position:absolute">&nbsp;</div>
+                    <div id="divProgressValue" style="position:relative">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 文字セット用モーダルウィンドウ -->
     <div id="divModalCharset" class="divModal">
         <div class="divModalBG"></div>
@@ -53,8 +69,8 @@
                 <div class="divModalCaption">ファイルから読み込む</div><div class="divCloseModal"><button id="btnCloseUpload">&nbsp;閉じる&nbsp;</button></div>
             </div>
             <div id="divUploadInnerFrame" class="divModalInnerFrame">
-                    サブセットに含める文字を列挙したファイルを指定してください：<br />
-                    <input type="file" id="fileUpload" style="width:35em" />
+                サブセットに含める文字を列挙したファイルを指定してください：<br />
+                <input type="file" id="fileUpload" style="width:35em" />
             </div>
         </div>
     </div>
@@ -578,7 +594,7 @@
             var charlist = generator.new_glyphs.map((a) => a.code).sort((a, b) => a - b);
             for (var i = 0; i < charlist.length; i += 8) {
                 var line = charlist.slice(i, i + 8).map((a) => "U+" + toHex(a, 4) + " \"" + String.fromCharCode(a) + "\"").join(", ");
-                lines.push( "// " + line);
+                lines.push("// " + line);
             }
 
             var text = lines.join("\n") + "\n";
@@ -596,13 +612,25 @@
             appendLog("フォントファイルを読み込んでいます... ");
             $.ajax({
                 url: font_source,
-                dataType: "text"
+                dataType: "text",
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = Math.round(100 * evt.loaded / evt.total);
+                            $("#divProgressBar").css("width", percentComplete + "%");
+                            $("#divProgressValue").text(percentComplete + "%");
+                        }
+                    }, false);
+                    return xhr;
+                }
             }).then(function (data) {
                 return new Promise((resolve, reject) => {
+                    $("#divModalProgress").fadeOut();
                     appendLog("成功", false);
                     appendLog(data.length + "バイトのフォントファイルを読み込みました。");
                     appendLog("フォントファイルを解析しています... ");
-                    setTimeout(() => resolve(data), 100);
+                    setTimeout(() => resolve(data), 500);
                 });
 
             }, function () {
