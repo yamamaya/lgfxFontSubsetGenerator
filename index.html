@@ -574,7 +574,9 @@
             lines.push("// IPAフォントのライセンスについては以下を参照してください。");
             lines.push("// https://moji.or.jp/ipafont/license/");
             lines.push("// このソースをスケッチに追加した後、フォントを利用するソースには、以下の定義を追加してください。");
-            lines.push("// extern const lgfx::U8g2font " + generator.name + ";");
+            lines.push("// extern const lgfx::U8g2font " + font_name + ";");
+            lines.push("// フォントを使用するときは、以下のようにsetFont関数で指定してください。");
+            lines.push("// lcd.setFont(&" + font_name + ");");
             lines.push("");
             lines.push("#include <LovyanGFX.hpp>");
             lines.push("");
