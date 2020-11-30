@@ -78,12 +78,36 @@
     <script language="javascript">
 
         // フォントファイルのURL
-        const font_source = "LovyanGFX/src/Fonts/IPA/lgfx_font_japan.c";
+        const font_source_IPA = "LovyanGFX/src/Fonts/IPA/lgfx_font_japan.c";
+        const font_source_efont = "LovyanGFX/src/Fonts/efont/lgfx_efont_ja.c";
 
         var font_master = new Map();    // 全フォント
         var subset_generator = null;    // サブセット生成器(FontFileGenerator)
 
         // フォントの一覧
+        const dictFontName = new Map([
+            ["lgfx_efont_ja_10", { order: 1, name: "efontJA_10", desc: "レギュラー/10ピクセル" }],
+            ["lgfx_efont_ja_10_b", { order: 2, name: "efontJA_10_b", desc: "太字/10ピクセル" }],
+            ["lgfx_efont_ja_10_bi", { order: 3, name: "efontJA_10_bi", desc: "太字/斜体/10ピクセル" }],
+            ["lgfx_efont_ja_10_i", { order: 4, name: "efontJA_10_i", desc: "斜体/10ピクセル" }],
+            ["lgfx_efont_ja_12", { order: 5, name: "efontJA_12", desc: "レギュラー/12ピクセル" }],
+            ["lgfx_efont_ja_12_b", { order: 5, name: "efontJA_12_b", desc: "太字/12ピクセル" }],
+            ["lgfx_efont_ja_12_bi", { order: 6, name: "efontJA_12_bi", desc: "太字/斜体/12ピクセル" }],
+            ["lgfx_efont_ja_12_i", { order: 7, name: "efontJA_12_i", desc: "斜体/12ピクセル" }],
+            ["lgfx_efont_ja_14", { order: 9, name: "efontJA_14", desc: "レギュラー/14ピクセル" }],
+            ["lgfx_efont_ja_14_b", { order: 10, name: "efontJA_14_b", desc: "太字/14ピクセル" }],
+            ["lgfx_efont_ja_14_bi", { order: 11, name: "efontJA_14_bi", desc: "太字/斜体/14ピクセル" }],
+            ["lgfx_efont_ja_14_i", { order: 12, name: "efontJA_14_i", desc: "斜体/14ピクセル" }],
+            ["lgfx_efont_ja_16", { order: 13, name: "efontJA_16", desc: "レギュラー/16ピクセル" }],
+            ["lgfx_efont_ja_16_b", { order: 14, name: "efontJA_16_b", desc: "太字/16ピクセル" }],
+            ["lgfx_efont_ja_16_bi", { order: 15, name: "efontJA_16_bi", desc: "太字/斜体/16ピクセル" }],
+            ["lgfx_efont_ja_16_i", { order: 16, name: "efontJA_16_i", desc: "斜体/16ピクセル" }],
+            ["lgfx_efont_ja_24", { order: 17, name: "efontJA_24", desc: "レギュラー/24ピクセル" }],
+            ["lgfx_efont_ja_24_b", { order: 18, name: "efontJA_24_b", desc: "太字/24ピクセル" }],
+            ["lgfx_efont_ja_24_bi", { order: 19, name: "efontJA_24_bi", desc: "太字/斜体/24ピクセル" }],
+            ["lgfx_efont_ja_24_i", { order: 20, name: "efontJA_24_i", desc: "斜体/24ピクセル" }]
+        ]);
+        /*
         const dictFontName = new Map([
             ["lgfx_font_japan_gothic_8", { order: 1, name: "lgfxJapanGothic_8", desc: "ゴシック体/等幅/8ピクセル" }],
             ["lgfx_font_japan_gothic_12", { order: 2, name: "lgfxJapanGothic_12", desc: "ゴシック体/等幅/12ピクセル" }],
@@ -122,6 +146,7 @@
             ["lgfx_font_japan_mincho_p_36", { order: 35, name: "lgfxJapanMinchoP_36", desc: "明朝体/プロポーショナル/36ピクセル" }],
             ["lgfx_font_japan_mincho_p_40", { order: 36, name: "lgfxJapanMinchoP_40", desc: "明朝体/プロポーショナル/40ピクセル" }]
         ]);
+        */
 
         // フォントヘッダ
         class FontFileHeader {
@@ -613,7 +638,7 @@
 
             appendLog("フォントファイルを読み込んでいます... ");
             $.ajax({
-                url: font_source,
+                url: font_source_efont,
                 dataType: "text",
                 xhr: function () {
                     var xhr = new window.XMLHttpRequest();
