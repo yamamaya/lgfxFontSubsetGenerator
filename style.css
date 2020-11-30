@@ -4,11 +4,11 @@ body {
 }
 
 #formMain {
-    margin: 0.5em;
+    margin: 0.5rem;
 }
 
 div.divGroup {
-    margin: 0 0 1em 0;
+    margin: 0 0 1rem 0;
 }
 
 div.divModal {
@@ -33,31 +33,31 @@ div.divModalBG {
 div.divModalFrame {
     background: #fff;
     left: 50%;
-    padding: 0.5em 1em 1em 1em;
+    padding: 0.5rem 1rem 1rem 1rem;
     position: absolute;
     top: 50%;
     transform: translate(-50%,-50%);
 }
 
 #divCharsetFrame {
-    width: 40em;
-    height: 30em;
+    width: 40rem;
+    height: 30rem;
 }
 
 #divUploadFrame {
-    width: 35em;
-    height: 8em;
+    width: 35rem;
+    height: 8rem;
 }
 
 #divProgressFrame {
-    width: 30em;
-    height: 5em;
+    width: 30rem;
+    height: 5rem;
 }
 
 div.divModalHeader {
     vertical-align: middle;
     position: relative;
-    padding-bottom: 0.2em;
+    padding-bottom: 0.2rem;
 }
 
 div.divModalCaption {
@@ -76,19 +76,19 @@ div.divModalInnerFrame {
 }
 
 #divCharsetInnerFrame {
-    height: 28em;
+    height: 28rem;
     overflow-y: scroll;
 }
 
 #divUploadInnerFrame {
-    height: 6em;
+    height: 6rem;
     display: table-cell;
     vertical-align: middle;
 }
 
 #divProgressInnerFrame {
-    width:30em;
-    height: 3em;
+    width:30rem;
+    height: 3rem;
     display: table-cell;
     text-align:center;
     vertical-align: middle;
@@ -106,8 +106,8 @@ table.CodeTable td {
 }
 
 td.char {
-    width: 2em;
-    height: 1em;
+    width: 2rem;
+    height: 1rem;
     text-align: center;
 }
 
