@@ -741,8 +741,16 @@
             clearLog();
         });
 
+        // 進捗表示を設定する
+        function setProgress(value) {
+            $("#divProgressBar").css("width", value + "%");
+            $("#divProgressValue").text(value + "%");
+        }
+
+        // フォントファイルをダウンロードする
         function downloadFontFile(url) {
             $("#selFont").children().remove();
+            setProgress(0);
             appendLog("フォントファイルを読み込んでいます... ");
             showModalWindow("divModalProgress");
             $.ajax({
@@ -753,8 +761,7 @@
                     xhr.addEventListener("progress", function (evt) {
                         if (evt.lengthComputable) {
                             var percentComplete = Math.round(100 * evt.loaded / evt.total);
-                            $("#divProgressBar").css("width", percentComplete + "%");
-                            $("#divProgressValue").text(percentComplete + "%");
+                            setProgress(percentComplete);
                         }
                     }, false);
                     return xhr;
