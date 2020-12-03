@@ -336,20 +336,17 @@
                 var table = ptr;
                 var list = new Array();
                 var e;
-                do {
-                    ptr += (this.data[table] << 8) | this.data[table + 1];
-                    e = (this.data[table + 2] << 8) | this.data[table + 3];
-                    var ptr2 = ptr;
-                    var code;
-                    while ((code = this.data[ptr2] << 8 | this.data[ptr2 + 1]) != 0) {
-                        if (list.indexOf(code) == -1) {
-                            list.push(code);
-                        }
-                        ptr2 += this.data[ptr2 + 2];
-                    }
-                    table += 4;
-                } while (e != 0xffff);
-                return list;
+
+                ptr += (this.data[table] << 8) | this.data[table + 1];
+                e = (this.data[table + 2] << 8) | this.data[table + 3];
+                var ptr2 = ptr;
+                var code;
+                while ((code = this.data[ptr2] << 8 | this.data[ptr2 + 1]) != 0) {
+                    list.push(code);
+                    ptr2 += this.data[ptr2 + 2];
+                }
+
+                return unique(list);
             }
 
             // 収録されている文字コードのリストを取得する
