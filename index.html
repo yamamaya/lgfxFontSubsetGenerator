@@ -9,8 +9,12 @@
     <div id="formMain">
         <h1>日本語フォントサブセットジェネレーター for LovyanGFX</h1>
         <div class="divGroup">
+            元となるフォントファイルを選んでください：<br />
+            <span style="vertical-align:middle"><input id="txtFontFile" type="text" readonly style="min-width:22rem" /><button id="btnSelectFontFile">フォントファイルを選ぶ</button></span>
+        </div>
+        <div class="divGroup">
             フォントを選んでください：<br />
-            <span style="vertical-align:middle"><select id="selFont" style="min-width:22rem"></select><button id="btnShowCharset" style="width:10rem" disabled>文字セットを見る</button></span>
+            <span style="vertical-align:middle"><select id="selFont" style="min-width:22rem" disabled></select><button id="btnShowCharset" style="width:10rem" disabled>文字セットを見る</button></span>
         </div>
         <div class="divGroup">
             <span style="vertical-align:middle">サブセットに含める文字を入力してください：&nbsp;<button id="btnUploadSubset">ファイルから読み込む</button></span><br />
@@ -34,14 +38,82 @@
         <a href="https://github.com/yamamaya/lgfxFontSubsetGenerator" target="_blank">https://github.com/yamamaya/lgfxFontSubsetGenerator</a>
     </div>
 
+    <!-- フォントファイル選択用モーダルウィンドウ -->
+    <div id="divModalFontFile" class="divModal">
+        <div class="divModalBG"></div>
+        <div id="divFontFileFrame" class="divModalFrame" style="width:40rem;height:27rem">
+            <div class="divModalHeader">
+                <div class="divModalCaption">フォントファイルを選択</div><div class="divCloseModal"><button id="btnCloseFontFile">&nbsp;閉じる&nbsp;</button></div>
+            </div>
+            <div id="divFontFileInnerFrame" class="divModalInnerFrame innerframe_middle" style="height:25rem">
+                <div class="divFontFileButton">
+                    <button id="btnSelect_IPAFont" class="btnFontFile">IPAフォント</button>
+                </div>
+                <div class="divFontFileDesc">
+                    文字情報技術促進協議会によって作成されたTrueTypeフォントをラスタライズしたフォントです。
+                    <table>
+                        <tr>
+                            <td>書体</td>
+                            <td>：</td>
+                            <td>ゴシック体 / 明朝体</td>
+                        </tr>
+                        <tr>
+                            <td>文字幅</td>
+                            <td>：</td>
+                            <td>等幅 / プロポーショナル</td>
+                        </tr>
+                        <tr>
+                            <td>書式</td>
+                            <td>：</td>
+                            <td>レギュラー</td>
+                        </tr>
+                        <tr>
+                            <td>サイズ</td>
+                            <td>：</td>
+                            <td>12,16,20,24,28,32,36,40</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="divFontFileButton">
+                    <button id="btnSelect_efont" class="btnFontFile">efont</button>
+                </div>
+                <div class="divFontFileDesc" style="margin-bottom:0">
+                    電子書体オープンラボによって作成されたビットマップフォントです。
+                    <table>
+                        <tr>
+                            <td>書体</td>
+                            <td>：</td>
+                            <td>ゴシック体</td>
+                        </tr>
+                        <tr>
+                            <td>文字幅</td>
+                            <td>：</td>
+                            <td>等幅</td>
+                        </tr>
+                        <tr>
+                            <td>書式</td>
+                            <td>：</td>
+                            <td>レギュラー / 太字 / 斜体 / 太字&amp;斜体</td>
+                        </tr>
+                        <tr>
+                            <td>サイズ</td>
+                            <td>：</td>
+                            <td>10,12,14,16,24</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 進捗表示用モーダルウィンドウ -->
     <div id="divModalProgress" class="divModal">
         <div class="divModalBG"></div>
-        <div id="divProgressFrame" class="divModalFrame">
+        <div class="divModalFrame" style="width:30rem;height:5rem">
             <div class="divModalHeader">
-                <div class="divModalCaption">フォントファイルをダウンロードしています...</div><div class="divCloseModal">&nbsp;</div>
+                <div id="divModalCaption" class="divModalCaption">フォントファイルをダウンロードしています...</div><div class="divCloseModal">&nbsp;</div>
             </div>
-            <div id="divProgressInnerFrame" class="divModalInnerFrame">
+            <div id="divProgressInnerFrame" class="divModalInnerFrame innerframe_middle" style="width:30rem;height:3rem;text-align:center">
                 <div style="border:1px solid black;width:30rem;">
                     <div id="divProgressBar" style="background-color:darkturquoise;width:0%;position:absolute">&nbsp;</div>
                     <div id="divProgressValue" style="position:relative">0%</div>
@@ -53,24 +125,24 @@
     <!-- 文字セット用モーダルウィンドウ -->
     <div id="divModalCharset" class="divModal">
         <div class="divModalBG"></div>
-        <div id="divCharsetFrame" class="divModalFrame">
+        <div class="divModalFrame" style="width:40rem;height:30rem">
             <div class="divModalHeader">
                 <div id="divFontName" class="divModalCaption">(フォント名)</div><div class="divCloseModal"><button id="btnCloseCharset">&nbsp;閉じる&nbsp;</button></div>
             </div>
-            <div id="divCharsetInnerFrame" class="divModalInnerFrame"></div>
+            <div id="divCharsetInnerFrame" class="divModalInnerFrame" style="height:28rem;overflow-y:scroll"></div>
         </div>
     </div>
 
     <!-- アップロード用モーダルウィンドウ -->
     <div id="divModalUpload" class="divModal">
         <div class="divModalBG"></div>
-        <div id="divUploadFrame" class="divModalFrame">
+        <div class="divModalFrame" style="width: 35rem;height: 8rem">
             <div class="divModalHeader">
                 <div class="divModalCaption">ファイルから読み込む</div><div class="divCloseModal"><button id="btnCloseUpload">&nbsp;閉じる&nbsp;</button></div>
             </div>
-            <div id="divUploadInnerFrame" class="divModalInnerFrame">
+            <div id="divUploadInnerFrame" class="divModalInnerFrame innerframe_middle" style="height:6rem">
                 サブセットに含める文字を列挙したファイルを指定してください：<br />
-                <input type="file" id="fileUpload" style="width:35rem" />
+                <input type="file" id="fileUpload" style="width:35rem;border: 1px solid black" />
             </div>
         </div>
     </div>
@@ -85,30 +157,7 @@
         var subset_generator = null;    // サブセット生成器(FontFileGenerator)
 
         // フォントの一覧
-        const dictFontName = new Map([
-            ["lgfx_efont_ja_10", { order: 1, name: "efontJA_10", desc: "レギュラー/10ピクセル" }],
-            ["lgfx_efont_ja_10_b", { order: 2, name: "efontJA_10_b", desc: "太字/10ピクセル" }],
-            ["lgfx_efont_ja_10_bi", { order: 3, name: "efontJA_10_bi", desc: "太字/斜体/10ピクセル" }],
-            ["lgfx_efont_ja_10_i", { order: 4, name: "efontJA_10_i", desc: "斜体/10ピクセル" }],
-            ["lgfx_efont_ja_12", { order: 5, name: "efontJA_12", desc: "レギュラー/12ピクセル" }],
-            ["lgfx_efont_ja_12_b", { order: 5, name: "efontJA_12_b", desc: "太字/12ピクセル" }],
-            ["lgfx_efont_ja_12_bi", { order: 6, name: "efontJA_12_bi", desc: "太字/斜体/12ピクセル" }],
-            ["lgfx_efont_ja_12_i", { order: 7, name: "efontJA_12_i", desc: "斜体/12ピクセル" }],
-            ["lgfx_efont_ja_14", { order: 9, name: "efontJA_14", desc: "レギュラー/14ピクセル" }],
-            ["lgfx_efont_ja_14_b", { order: 10, name: "efontJA_14_b", desc: "太字/14ピクセル" }],
-            ["lgfx_efont_ja_14_bi", { order: 11, name: "efontJA_14_bi", desc: "太字/斜体/14ピクセル" }],
-            ["lgfx_efont_ja_14_i", { order: 12, name: "efontJA_14_i", desc: "斜体/14ピクセル" }],
-            ["lgfx_efont_ja_16", { order: 13, name: "efontJA_16", desc: "レギュラー/16ピクセル" }],
-            ["lgfx_efont_ja_16_b", { order: 14, name: "efontJA_16_b", desc: "太字/16ピクセル" }],
-            ["lgfx_efont_ja_16_bi", { order: 15, name: "efontJA_16_bi", desc: "太字/斜体/16ピクセル" }],
-            ["lgfx_efont_ja_16_i", { order: 16, name: "efontJA_16_i", desc: "斜体/16ピクセル" }],
-            ["lgfx_efont_ja_24", { order: 17, name: "efontJA_24", desc: "レギュラー/24ピクセル" }],
-            ["lgfx_efont_ja_24_b", { order: 18, name: "efontJA_24_b", desc: "太字/24ピクセル" }],
-            ["lgfx_efont_ja_24_bi", { order: 19, name: "efontJA_24_bi", desc: "太字/斜体/24ピクセル" }],
-            ["lgfx_efont_ja_24_i", { order: 20, name: "efontJA_24_i", desc: "斜体/24ピクセル" }]
-        ]);
-        /*
-        const dictFontName = new Map([
+        const dictFontName_IPA = new Map([
             ["lgfx_font_japan_gothic_8", { order: 1, name: "lgfxJapanGothic_8", desc: "ゴシック体/等幅/8ピクセル" }],
             ["lgfx_font_japan_gothic_12", { order: 2, name: "lgfxJapanGothic_12", desc: "ゴシック体/等幅/12ピクセル" }],
             ["lgfx_font_japan_gothic_16", { order: 3, name: "lgfxJapanGothic_16", desc: "ゴシック体/等幅/16ピクセル" }],
@@ -146,7 +195,46 @@
             ["lgfx_font_japan_mincho_p_36", { order: 35, name: "lgfxJapanMinchoP_36", desc: "明朝体/プロポーショナル/36ピクセル" }],
             ["lgfx_font_japan_mincho_p_40", { order: 36, name: "lgfxJapanMinchoP_40", desc: "明朝体/プロポーショナル/40ピクセル" }]
         ]);
-        */
+
+        const dictFontName_efont = new Map([
+            ["lgfx_efont_ja_10", { order: 1, name: "efontJA_10", desc: "レギュラー/10ピクセル" }],
+            ["lgfx_efont_ja_10_b", { order: 2, name: "efontJA_10_b", desc: "太字/10ピクセル" }],
+            ["lgfx_efont_ja_10_bi", { order: 3, name: "efontJA_10_bi", desc: "太字/斜体/10ピクセル" }],
+            ["lgfx_efont_ja_10_i", { order: 4, name: "efontJA_10_i", desc: "斜体/10ピクセル" }],
+            ["lgfx_efont_ja_12", { order: 5, name: "efontJA_12", desc: "レギュラー/12ピクセル" }],
+            ["lgfx_efont_ja_12_b", { order: 5, name: "efontJA_12_b", desc: "太字/12ピクセル" }],
+            ["lgfx_efont_ja_12_bi", { order: 6, name: "efontJA_12_bi", desc: "太字/斜体/12ピクセル" }],
+            ["lgfx_efont_ja_12_i", { order: 7, name: "efontJA_12_i", desc: "斜体/12ピクセル" }],
+            ["lgfx_efont_ja_14", { order: 9, name: "efontJA_14", desc: "レギュラー/14ピクセル" }],
+            ["lgfx_efont_ja_14_b", { order: 10, name: "efontJA_14_b", desc: "太字/14ピクセル" }],
+            ["lgfx_efont_ja_14_bi", { order: 11, name: "efontJA_14_bi", desc: "太字/斜体/14ピクセル" }],
+            ["lgfx_efont_ja_14_i", { order: 12, name: "efontJA_14_i", desc: "斜体/14ピクセル" }],
+            ["lgfx_efont_ja_16", { order: 13, name: "efontJA_16", desc: "レギュラー/16ピクセル" }],
+            ["lgfx_efont_ja_16_b", { order: 14, name: "efontJA_16_b", desc: "太字/16ピクセル" }],
+            ["lgfx_efont_ja_16_bi", { order: 15, name: "efontJA_16_bi", desc: "太字/斜体/16ピクセル" }],
+            ["lgfx_efont_ja_16_i", { order: 16, name: "efontJA_16_i", desc: "斜体/16ピクセル" }],
+            ["lgfx_efont_ja_24", { order: 17, name: "efontJA_24", desc: "レギュラー/24ピクセル" }],
+            ["lgfx_efont_ja_24_b", { order: 18, name: "efontJA_24_b", desc: "太字/24ピクセル" }],
+            ["lgfx_efont_ja_24_bi", { order: 19, name: "efontJA_24_bi", desc: "太字/斜体/24ピクセル" }],
+            ["lgfx_efont_ja_24_i", { order: 20, name: "efontJA_24_i", desc: "斜体/24ピクセル" }]
+        ]);
+
+        // フォントファイルの一覧
+        const dictFontFile = {
+            IPA: {
+                name: "IPAフォント",
+                URL: font_source_IPA,
+                font_dic: dictFontName_IPA
+            },
+            efont: {
+                name: "efont",
+                URL: font_source_efont,
+                font_dic: dictFontName_efont
+            }
+        };
+
+        // 現在選択されているフォント
+        var dictFontName;
 
         // フォントヘッダ
         class FontFileHeader {
@@ -629,16 +717,39 @@
             return text;
         }
 
+        // モーダルウィンドウを表示する
+        function showModalWindow(id) {
+            if (id.indexOf("#") != 0) {
+                id = "#" + id;
+            }
+            $(id).fadeIn(300);
+        }
+
+        // モーダルウィンドウを消す
+        function hideModalWindow(id) {
+            if (id.indexOf("#") != 0) {
+                id = "#" + id;
+            }
+            $(id).fadeOut(300);
+        }
+
         // READY
         $(function () {
-            $("#selFont").children().remove();
+            $("#txtFontFile").val("");
             $("#fileUpload").val("");
+            $("#selFont").prop("disabled", true);
+            $("#btnShowCharset").prop("disabled", true);
+            $("#btnGenerate").prop("disabled", true);
             disableDownload();
             clearLog();
+        });
 
+        function downloadFontFile(url) {
+            $("#selFont").children().remove();
             appendLog("フォントファイルを読み込んでいます... ");
+            showModalWindow("divModalProgress");
             $.ajax({
-                url: font_source_efont,
+                url: url,
                 dataType: "text",
                 xhr: function () {
                     var xhr = new window.XMLHttpRequest();
@@ -653,7 +764,7 @@
                 }
             }).then(function (data) {
                 return new Promise((resolve, reject) => {
-                    $("#divModalProgress").fadeOut();
+                    hideModalWindow("divModalProgress");
                     appendLog("成功", false);
                     appendLog(data.length + "バイトのフォントファイルを読み込みました。");
                     appendLog("フォントファイルを解析しています... ");
@@ -677,13 +788,43 @@
                     }
                 });
 
+                $("#selFont").prop("disabled", false);
                 $("#btnShowCharset").prop("disabled", false);
                 $("#btnGenerate").prop("disabled", false);
 
             }).catch(() => {
-                $("#divModalProgress").fadeOut();
+                hideModalWindow("divModalProgress");
                 appendLog("フォントファイルを読み込めませんでした。");
             });
+        }
+
+        // 「フォントファイルを選ぶ」
+        $("#btnSelectFontFile").on("click", function () {
+            showModalWindow("divModalFontFile");
+        });
+        $("#txtFontFile").on("click", function () {
+            showModalWindow("divModalFontFile");
+        });
+
+        // 「閉じる」（フォントファイル）
+        $("#btnCloseFontFile").on("click", function () {
+            hideModalWindow("divModalFontFile");
+        });
+
+        // 「IPAフォント」（フォントファイル）
+        $("#btnSelect_IPAFont").on("click", function () {
+            hideModalWindow("divModalFontFile");
+            $("#txtFontFile").val(dictFontFile.IPA.name);
+            dictFontName = dictFontFile.IPA.font_dic;
+            downloadFontFile(dictFontFile.IPA.URL);
+        });
+
+        // 「efont」（フォントファイル）
+        $("#btnSelect_efont").on("click", function () {
+            hideModalWindow("divModalFontFile");
+            $("#txtFontFile").val(dictFontFile.efont.name);
+            dictFontName = dictFontFile.efont.font_dic;
+            downloadFontFile(dictFontFile.efont.URL);
         });
 
         // 「文字セットを見る」
@@ -709,13 +850,13 @@
                 $("#divFontName").text(dictFontName.get(font_name).name);
                 $("#divCharsetInnerFrame").children().remove();
                 $("#divCharsetInnerFrame").append(content);
-                $("#divModalCharset").fadeIn();
+                showModalWindow("divModalCharset");
             });
         });
 
         // 「閉じる」（文字セット）
         $("#btnCloseCharset").on("click", function () {
-            $("#divModalCharset").fadeOut();
+            hideModalWindow("divModalCharset");
         });
 
         var download_file = null;       // ダウンロード用ファイル(Blob)
@@ -820,12 +961,12 @@
 
         // ファイルから読み込む
         $("#btnUploadSubset").on("click", function () {
-            $("#divModalUpload").fadeIn();
+            showModalWindow("divModalUpload");
         });
 
         // 「閉じる」（ファイルから読み込む）
         $("#btnCloseUpload").on("click", function () {
-            $("#divModalUpload").fadeOut();
+            hideModalWindow("divModalUpload");
         });
 
         // アップロード
@@ -835,7 +976,7 @@
             reader.onload = function (arg) {
                 var src_data = arg.target.result;
                 $("#txtSubset").val(src_data);
-                $("#divModalUpload").fadeOut();
+                hideModalWindow("divModalUpload");
                 disableDownload();
             };
             reader.onerror = function () {

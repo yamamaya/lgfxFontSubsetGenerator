@@ -19,10 +19,6 @@ div.divModal {
     width: 100%;
 }
 
-#divModalProgress {
-    display: block;
-}
-
 div.divModalBG {
     background: rgba(0,0,0,0.5);
     height: 100vh;
@@ -37,21 +33,6 @@ div.divModalFrame {
     position: absolute;
     top: 50%;
     transform: translate(-50%,-50%);
-}
-
-#divCharsetFrame {
-    width: 40rem;
-    height: 30rem;
-}
-
-#divUploadFrame {
-    width: 35rem;
-    height: 8rem;
-}
-
-#divProgressFrame {
-    width: 30rem;
-    height: 5rem;
 }
 
 div.divModalHeader {
@@ -75,22 +56,8 @@ div.divModalInnerFrame {
     width: 100%;
 }
 
-#divCharsetInnerFrame {
-    height: 28rem;
-    overflow-y: scroll;
-}
-
-#divUploadInnerFrame {
-    height: 6rem;
+div.innerframe_middle {
     display: table-cell;
-    vertical-align: middle;
-}
-
-#divProgressInnerFrame {
-    width:30rem;
-    height: 3rem;
-    display: table-cell;
-    text-align:center;
     vertical-align: middle;
 }
 
@@ -111,10 +78,21 @@ td.char {
     text-align: center;
 }
 
-#fileUpload {
-    border: 1px solid black;
-}
-
 .msgErrorMessage {
     color: coral;
+}
+
+button.btnFontFile {
+    width: 10rem;
+    height: 2rem;
+    font-weight:bold;
+}
+
+div.divFontFileButton {
+    margin-bottom: 0.2rem;
+}
+
+div.divFontFileDesc {
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
 }
